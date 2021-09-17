@@ -1,5 +1,9 @@
 (def a 1)
 (def b 2)
 (def c 3)
-(def d 4)
-(def e 5)
+
+
+(bool 1)
+(bool "lorem")
+(bool null)
+(bool false)

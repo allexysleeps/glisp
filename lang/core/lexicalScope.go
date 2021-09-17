@@ -1,3 +1,3 @@
 package core
 
-var LexicalScope = make(map[string]string)
+var lexicalScope = make(map[string]primitiveValue)

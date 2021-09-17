@@ -27,13 +27,15 @@ func Compile(srcCode []byte) {
 
   for _, exp := range expressions {
     args := strings.Fields(string(exp))
-    Keywords[args[0]](args[0:])
+    operationName := args[0]
+    if operation := operationsMap[operationName]; operation != nil {
+      operation(args[1:])
+    }
   }
-  logLexicalEnv()
 }
 
 func logLexicalEnv() {
-  for key, value := range LexicalScope {
+  for key, value := range lexicalScope {
     fmt.Printf("%s: '%s'\n", key, value)
   }
 }

@@ -1,5 +1,6 @@
 package core
 
-var Keywords = map[string]func(args []string) {
-  "def": DefineVariable,
+var operationsMap = map[string]func(args []string)primitiveValue {
+  "def": operationDef,
+  "bool": operationBool,
 }
