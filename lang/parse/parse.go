@@ -9,26 +9,25 @@ import (
 )
 
 type lexer struct {
-	scan scanner.Scanner
+	scan  scanner.Scanner
 	token rune
 }
 
-type lexPanic string
-
-func (lex *lexer) next() { lex.token = lex.scan.Scan() }
+func (lex *lexer) next()        { lex.token = lex.scan.Scan() }
 func (lex *lexer) text() string { return lex.scan.TokenText() }
 
 func Parse(input io.Reader) []expression.Exp {
 	lex := new(lexer)
 	var expressions []expression.Exp
 	lex.scan.Init(input)
-	lex.scan.Mode = scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanStrings
+	lex.scan.Mode =
+		scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanStrings | scanner.SkipComments
 	lex.next()
 out:
 	for {
 		switch lex.token {
 		case symbols.ParOpen:
-			expressions = append(expressions, parseExp(lex))
+			expressions = append(expressions, *parseExp(lex))
 		case scanner.EOF:
 			break out
 		default:
@@ -38,14 +37,9 @@ out:
 	return expressions
 }
 
-func parseExp(lex *lexer) expression.Exp {
+func parseExp(lex *lexer) *expression.Exp {
 	var exp expression.Exp
 
-	parser(lex, &exp)
-	return exp
-}
-
-func parser(lex *lexer, exp *expression.Exp) *expression.Exp {
 	lex.next()
 
 	if lex.token == symbols.ParClose {
@@ -59,16 +53,17 @@ out:
 	for {
 		switch lex.token {
 		case symbols.ParOpen:
-			args = append(args, expression.ArgExp{ Val: parser(lex, exp) })
+			args = append(args, expression.ArgExp{Val: parseExp(lex)})
 		case symbols.ParClose:
 			lex.next()
 			break out
 		default:
-			args = append(args, expression.ArgValue{ Val: lex.text() })
+			args = append(args, expression.ArgValue{Val: lex.text()})
 			lex.next()
 		}
 	}
-	return exp
+	exp.Arguments = args
+	return &exp
 }
 
 func parseOperation(lex *lexer) string {

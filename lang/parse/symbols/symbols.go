@@ -1,6 +1,6 @@
 package symbols
 
 const (
-	ParOpen = '('
+	ParOpen  = '('
 	ParClose = ')'
 )

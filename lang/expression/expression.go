@@ -2,7 +2,7 @@ package expression
 
 const (
 	TypeValue = "value"
-	TypeExp = "expression"
+	TypeExp   = "expression"
 )
 
 type ExpArgument interface {
@@ -18,7 +18,7 @@ type ArgExp struct {
 }
 
 func (v ArgValue) Type() string { return TypeValue }
-func (v ArgExp) Type() string { return TypeExp }
+func (v ArgExp) Type() string   { return TypeExp }
 
 type Exp struct {
 	Operation string
