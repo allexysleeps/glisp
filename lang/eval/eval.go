@@ -3,32 +3,28 @@ package eval
 import (
 	"glisp/lang/operations"
 	"glisp/lang/shared"
-	"glisp/lang/variables"
 	"log"
 )
 
-func Eval(exp shared.Exp) interface{} {
-	return eval(exp)
+func Eval(parentScope *shared.Scope, exp shared.Exp) interface{} {
+	return eval(parentScope, exp)
 }
 
-func eval(exp shared.Exp) interface{} {
-	scope := new(shared.Scope)
-	scope.Create()
-	exp.Scope = scope
+func eval(scope *shared.Scope, exp shared.Exp) interface{} {
 	switch exp.Operation {
 	case "sum":
-		return operations.Sum(&exp, eval)
+		return operations.Sum(scope, &exp, eval)
 	case "sub":
-		return operations.Sub(&exp, eval)
+		return operations.Sub(scope, &exp, eval)
 	case "mult":
-		return operations.Mult(&exp, eval)
+		return operations.Mult(scope, &exp, eval)
 	case "div":
-		return operations.Div(&exp, eval)
+		return operations.Div(scope, &exp, eval)
 	case "print":
-		operations.Print(&exp, eval)
+		operations.Print(scope, &exp, eval)
 		return nil
 	case "def":
-		return variables.Def(&exp, eval)
+		return operations.Def(scope, &exp, eval)
 	default:
 		log.Printf("undefined operation %v\n", exp.Operation)
 	}

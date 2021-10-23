@@ -1,1 +1,2 @@
-(def a "5")
+(def a 5)
+(print (sum a 10))

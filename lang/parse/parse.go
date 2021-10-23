@@ -5,6 +5,8 @@ import (
 	"glisp/lang/parse/symbols"
 	"glisp/lang/shared"
 	"io"
+	"strconv"
+	"strings"
 	"text/scanner"
 )
 
@@ -51,13 +53,15 @@ func parseExp(lex *lexer) *shared.Exp {
 	var args []shared.ExpArgument
 out:
 	for {
-		fmt.Println(lex.text())
-		switch lex.token {
-		case symbols.ParOpen:
+		switch {
+		case lex.token == symbols.ParOpen:
 			args = append(args, shared.ArgExp{Value: parseExp(lex)})
-		case symbols.ParClose:
+		case lex.token == symbols.ParClose:
 			lex.next()
 			break out
+		case isVariable(lex):
+			args = append(args, shared.ArgVariable{Value: lex.text()})
+			lex.next()
 		default:
 			args = append(args, shared.ArgValue{Value: lex.text()})
 			lex.next()
@@ -71,4 +75,17 @@ func parseOperation(lex *lexer) string {
 	op := lex.text()
 	lex.next()
 	return op
+}
+
+func isVariable(lex *lexer) bool {
+	txt := lex.text()
+	if strings.HasPrefix(txt, "\"") && strings.HasSuffix(txt, "\"") {
+		return false
+	}
+
+	if _, err := strconv.ParseFloat(txt, 64); err == nil {
+		return false
+	}
+
+	return true
 }

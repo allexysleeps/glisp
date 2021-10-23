@@ -4,16 +4,22 @@ import (
 	"glisp/lang/shared"
 )
 
-func calcArgs(exp *shared.Exp, eval shared.Evaluator, calc func(a, b float64) float64) float64 {
+func calcArgs(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator, calc func(a, b float64) float64) float64 {
 	var r float64
 	for i, arg := range exp.Arguments {
 		var diff float64
-
 		switch arg.Type() {
 		case shared.TypeValue:
 			diff = getNumArg(arg)
+		case shared.TypeVariable:
+			variable := scope.Get(arg.(shared.ArgVariable).Value)
+			val, err := variable.NumVal()
+			if err != nil {
+				panic(err)
+			}
+			diff = val
 		case shared.TypeExp:
-			diff = eval(*arg.(shared.ArgExp).Value).(float64)
+			diff = eval(scope, *arg.(shared.ArgExp).Value).(float64)
 		}
 
 		if i == 0 {
@@ -25,18 +31,18 @@ func calcArgs(exp *shared.Exp, eval shared.Evaluator, calc func(a, b float64) fl
 	return r
 }
 
-func Sum(exp *shared.Exp, eval shared.Evaluator) float64 {
-	return calcArgs(exp, eval, func(a, b float64) float64 { return a + b })
+func Sum(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(scope, exp, eval, func(a, b float64) float64 { return a + b })
 }
 
-func Sub(exp *shared.Exp, eval shared.Evaluator) float64 {
-	return calcArgs(exp, eval, func(a, b float64) float64 { return a - b })
+func Sub(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(scope, exp, eval, func(a, b float64) float64 { return a - b })
 }
 
-func Mult(exp *shared.Exp, eval shared.Evaluator) float64 {
-	return calcArgs(exp, eval, func(a, b float64) float64 { return a * b })
+func Mult(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(scope, exp, eval, func(a, b float64) float64 { return a * b })
 }
 
-func Div(exp *shared.Exp, eval shared.Evaluator) float64 {
-	return calcArgs(exp, eval, func(a, b float64) float64 { return a / b })
+func Div(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(scope, exp, eval, func(a, b float64) float64 { return a / b })
 }
