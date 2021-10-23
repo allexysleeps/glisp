@@ -1,15 +1,15 @@
 package main
 
 import (
-  "glisp/lang/core"
-  "io/ioutil"
+  "glisp/lang"
   "log"
+  "os"
 )
 
 func main() {
-  b, err := ioutil.ReadFile("samples/basics.glisp")
+  file, err := os.Open("samples/basics.glisp")
   if err != nil {
      log.Fatal(err)
   }
-  core.Compile(b)
+  lang.Run(file)
 }
