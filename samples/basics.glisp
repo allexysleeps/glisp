@@ -1,2 +1,3 @@
 (def a 5)
-(print (sum a 10))
+(def b (mult a a))
+(print (sum a b))
