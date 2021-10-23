@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-func Eval(exp expression.Exp) {
-	eval(exp)
+func Eval(exp expression.Exp) interface{} {
+	return eval(exp)
 }
 
 func eval(exp expression.Exp) interface{} {
