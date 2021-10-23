@@ -2,9 +2,11 @@ package parse
 
 import (
 	"fmt"
-	"glisp/lang/expression"
 	"glisp/lang/parse/symbols"
+	"glisp/lang/shared"
 	"io"
+	"strconv"
+	"strings"
 	"text/scanner"
 )
 
@@ -16,9 +18,9 @@ type lexer struct {
 func (lex *lexer) next()        { lex.token = lex.scan.Scan() }
 func (lex *lexer) text() string { return lex.scan.TokenText() }
 
-func Parse(input io.Reader) []expression.Exp {
+func Parse(input io.Reader) []shared.Exp {
 	lex := new(lexer)
-	var expressions []expression.Exp
+	var expressions []shared.Exp
 	lex.scan.Init(input)
 	lex.scan.Mode =
 		scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanStrings | scanner.SkipComments
@@ -37,8 +39,8 @@ out:
 	return expressions
 }
 
-func parseExp(lex *lexer) *expression.Exp {
-	var exp expression.Exp
+func parseExp(lex *lexer) *shared.Exp {
+	var exp shared.Exp
 
 	lex.next()
 
@@ -48,17 +50,20 @@ func parseExp(lex *lexer) *expression.Exp {
 	}
 	exp.Operation = parseOperation(lex)
 
-	var args []expression.ExpArgument
+	var args []shared.ExpArgument
 out:
 	for {
-		switch lex.token {
-		case symbols.ParOpen:
-			args = append(args, expression.ArgExp{Val: parseExp(lex)})
-		case symbols.ParClose:
+		switch {
+		case lex.token == symbols.ParOpen:
+			args = append(args, shared.ArgExp{Value: parseExp(lex)})
+		case lex.token == symbols.ParClose:
 			lex.next()
 			break out
+		case isVariable(lex):
+			args = append(args, shared.ArgVariable{Value: lex.text()})
+			lex.next()
 		default:
-			args = append(args, expression.ArgValue{Val: lex.text()})
+			args = append(args, shared.ArgValue{Value: lex.text()})
 			lex.next()
 		}
 	}
@@ -70,4 +75,17 @@ func parseOperation(lex *lexer) string {
 	op := lex.text()
 	lex.next()
 	return op
+}
+
+func isVariable(lex *lexer) bool {
+	txt := lex.text()
+	if strings.HasPrefix(txt, "\"") && strings.HasSuffix(txt, "\"") {
+		return false
+	}
+
+	if _, err := strconv.ParseFloat(txt, 64); err == nil {
+		return false
+	}
+
+	return true
 }

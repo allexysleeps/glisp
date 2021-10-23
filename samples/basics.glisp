@@ -1,7 +1,2 @@
-(print (div 10 5))
-
-(print (sub 2 5 (sum 1 2 (sum 3 2))))
-
-(print
-    (mult (sum 1 2) (div 10 3) (sub (mult 2 2) (sum 5 8)))
-    )
+(def a 5)
+(print (sum a 10))

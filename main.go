@@ -9,6 +9,14 @@ import (
 )
 
 func main() {
+	if len(os.Args) == 1 {
+		file, err := os.Open("samples/basics.glisp")
+		if err != nil {
+			log.Fatal(err)
+		}
+		lang.Run(file)
+		return
+	}
 	switch os.Args[1] {
 	case "eval":
 		if len(os.Args) < 3 {
@@ -27,10 +35,6 @@ func main() {
 		}
 		lang.Run(file)
 	default:
-		file, err := os.Open("samples/basics.glisp")
-		if err != nil {
-			log.Fatal(err)
-		}
-		lang.Run(file)
+		panic("unknown command" + os.Args[1])
 	}
 }
