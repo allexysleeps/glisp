@@ -1,20 +1,19 @@
 package operations
 
 import (
-	"glisp/lang/expression"
 	"glisp/lang/shared"
 )
 
-func calcArgs(exp *expression.Exp, eval shared.Evaluator, calc func(a, b float64) float64) float64 {
+func calcArgs(exp *shared.Exp, eval shared.Evaluator, calc func(a, b float64) float64) float64 {
 	var r float64
 	for i, arg := range exp.Arguments {
 		var diff float64
 
 		switch arg.Type() {
-		case expression.TypeValue:
+		case shared.TypeValue:
 			diff = getNumArg(arg)
-		case expression.TypeExp:
-			diff = eval(*arg.(expression.ArgExp).Val).(float64)
+		case shared.TypeExp:
+			diff = eval(*arg.(shared.ArgExp).Value).(float64)
 		}
 
 		if i == 0 {
@@ -26,18 +25,18 @@ func calcArgs(exp *expression.Exp, eval shared.Evaluator, calc func(a, b float64
 	return r
 }
 
-func Sum(exp *expression.Exp, eval shared.Evaluator) float64 {
+func Sum(exp *shared.Exp, eval shared.Evaluator) float64 {
 	return calcArgs(exp, eval, func(a, b float64) float64 { return a + b })
 }
 
-func Sub(exp *expression.Exp, eval shared.Evaluator) float64 {
+func Sub(exp *shared.Exp, eval shared.Evaluator) float64 {
 	return calcArgs(exp, eval, func(a, b float64) float64 { return a - b })
 }
 
-func Mult(exp *expression.Exp, eval shared.Evaluator) float64 {
+func Mult(exp *shared.Exp, eval shared.Evaluator) float64 {
 	return calcArgs(exp, eval, func(a, b float64) float64 { return a * b })
 }
 
-func Div(exp *expression.Exp, eval shared.Evaluator) float64 {
+func Div(exp *shared.Exp, eval shared.Evaluator) float64 {
 	return calcArgs(exp, eval, func(a, b float64) float64 { return a / b })
 }

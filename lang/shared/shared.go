@@ -1,5 +1,12 @@
 package shared
 
-import "glisp/lang/expression"
+type Evaluator func(exp Exp) interface{}
 
-type Evaluator func(exp expression.Exp) interface{}
+type Variable struct {
+	Name  string
+	Value string
+}
+
+func (v *Variable) Val() string {
+	return v.Value
+}
