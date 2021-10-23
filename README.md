@@ -1,15 +1,15 @@
-#Glisp
-###Simple lisp implementation on Golang just for fun and self education.
+# Glisp
+### Simple lisp implementation on Golang just for fun and self education.
 
-##Usage
+## Usage
 `go build` to build binary
 
 `./glisp run <filepath>` run glisp code from the file
 
 `./glisp eval "<glisp_expression>"` evaluate glisp expression from command line
 
-##Supported syntax
-###Operators
+## Supported syntax
+### Operators
 | operation | arguments | description | example |
 |---|---|---|---|
 | sum | 2...N (num) | add N numbers | `(sum 1 2 3) // 6`|
