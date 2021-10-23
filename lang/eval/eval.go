@@ -16,6 +16,10 @@ func eval(exp expression.Exp) interface{} {
 		return operations.Sum(&exp, eval)
 	case "sub":
 		return operations.Sub(&exp, eval)
+	case "mult":
+		return operations.Mult(&exp, eval)
+	case "div":
+		return operations.Div(&exp, eval)
 	case "print":
 		operations.Print(&exp, eval)
 		return nil

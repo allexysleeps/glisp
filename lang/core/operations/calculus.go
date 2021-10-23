@@ -3,42 +3,41 @@ package operations
 import (
 	"glisp/lang/expression"
 	"glisp/lang/shared"
-	"strconv"
 )
 
-func Sum(exp *expression.Exp, eval shared.Evaluator) float64 {
-	var s float64
-	for _, arg := range exp.Arguments {
+func calcArgs(exp *expression.Exp, eval shared.Evaluator, calc func(a, b float64) float64) float64 {
+	var r float64
+	for i, arg := range exp.Arguments {
+		var diff float64
+
 		switch arg.Type() {
 		case expression.TypeValue:
-			argVal := arg.(expression.ArgValue)
-			numVal, err := strconv.ParseFloat(argVal.Val, 64)
-			if err != nil {
-				panic(err)
-			}
-			s += numVal
+			diff = getNumArg(arg)
 		case expression.TypeExp:
-			s += eval(*arg.(expression.ArgExp).Val).(float64)
+			diff = eval(*arg.(expression.ArgExp).Val).(float64)
+		}
+
+		if i == 0 {
+			r = diff
+		} else {
+			r = calc(r, diff)
 		}
 	}
-	return s
+	return r
+}
+
+func Sum(exp *expression.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(exp, eval, func(a, b float64) float64 { return a + b })
 }
 
 func Sub(exp *expression.Exp, eval shared.Evaluator) float64 {
-	val := exp.Arguments[0].(expression.ArgValue).Val
-	s, _ := strconv.ParseFloat(val, 64)
-	for _, arg := range exp.Arguments[1:] {
-		switch arg.Type() {
-		case expression.TypeValue:
-			argVal := arg.(expression.ArgValue)
-			numVal, err := strconv.ParseFloat(argVal.Val, 64)
-			if err != nil {
-				panic(err)
-			}
-			s -= numVal
-		case expression.TypeExp:
-			s -= eval(*arg.(expression.ArgExp).Val).(float64)
-		}
-	}
-	return s
+	return calcArgs(exp, eval, func(a, b float64) float64 { return a - b })
+}
+
+func Mult(exp *expression.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(exp, eval, func(a, b float64) float64 { return a * b })
+}
+
+func Div(exp *expression.Exp, eval shared.Evaluator) float64 {
+	return calcArgs(exp, eval, func(a, b float64) float64 { return a / b })
 }
