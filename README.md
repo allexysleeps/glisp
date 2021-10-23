@@ -16,4 +16,9 @@
 | sub | 2...N (num) | chain subtraction  for N numbers | `(sub 1 2 3) // -4`|
 | mult | 2...N (num) | multiply N numbers | `(mult 1 2 3) // 6` |
 | sum | 2...N (num) | add N numbers | `(div 25 5 2) // 2.5` |
-| print | 1 any | print arg to console log | `(print "hello world") // glisp>> hello world` |
+| print | 1 any | print arg to console log | `(print "hello world") // hello world` |
+
+### Nested expressions
+```
+(print (sum (div 100 2 (sum 2 3)) (sub (20 7 3)))) // 20
+```
