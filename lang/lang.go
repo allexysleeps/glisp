@@ -1,7 +1,6 @@
 package lang
 
 import (
-	"fmt"
 	"glisp/lang/eval"
 	"glisp/lang/shared"
 	"io"
@@ -18,9 +17,9 @@ func Run(input io.Reader) {
 	}
 }
 
-func EvalExp(input io.Reader) {
+func EvalExp(input io.Reader) interface{} {
 	exp := parse.Parse(input)[0]
 	scope := shared.CreateScope(nil)
-	fmt.Printf("glsip>> ")
-	fmt.Println(eval.Eval(scope, exp))
+	res := eval.Eval(scope, exp)
+	return res
 }

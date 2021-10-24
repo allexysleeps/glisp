@@ -24,7 +24,9 @@ func main() {
 		}
 		exp := os.Args[2]
 		fmt.Printf("glisp<< %s\n", exp)
-		lang.EvalExp(strings.NewReader(exp))
+		res := lang.EvalExp(strings.NewReader(exp))
+		fmt.Println()
+		fmt.Printf("glsip>> %v", res)
 	case "run":
 		if len(os.Args) < 3 {
 			panic("Missing filepath")
