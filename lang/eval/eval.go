@@ -6,11 +6,11 @@ import (
 	"log"
 )
 
-func Eval(parentScope *shared.Scope, exp shared.Exp) interface{} {
+func Eval(parentScope *shared.Scope, exp shared.Exp) shared.Value {
 	return eval(parentScope, exp)
 }
 
-func eval(scope *shared.Scope, exp shared.Exp) interface{} {
+func eval(scope *shared.Scope, exp shared.Exp) shared.Value {
 	switch exp.Operation {
 	case "sum":
 		return operations.Sum(scope, &exp, eval)

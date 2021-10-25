@@ -5,8 +5,8 @@ type Scope struct {
 	Parent *Scope
 }
 
-func (s *Scope) Set(v *Variable) {
-	s.Vars[v.Name] = v
+func (s *Scope) Set(v Variable) {
+	s.Vars[v.Name] = &v
 }
 
 func (s *Scope) Get(name string) *Variable {

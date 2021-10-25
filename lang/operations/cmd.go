@@ -10,7 +10,10 @@ func Print(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) {
 	switch arg.Type() {
 	case shared.TypeValue:
 		fmt.Println(arg.(shared.ArgValue).StrVal())
+	case shared.TypeVariable:
+		val := scope.Get(arg.(shared.ArgVariable).Value)
+		fmt.Println(val.StrVal())
 	case shared.TypeExp:
-		fmt.Println(eval(scope, *arg.(shared.ArgExp).Value))
+		fmt.Println(eval(scope, *arg.(shared.ArgExp).Value).StrVal())
 	}
 }

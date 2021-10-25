@@ -5,8 +5,6 @@ import (
 	"glisp/lang/parse/symbols"
 	"glisp/lang/shared"
 	"io"
-	"strconv"
-	"strings"
 	"text/scanner"
 )
 
@@ -48,9 +46,12 @@ func parseExp(lex *lexer) *shared.Exp {
 		lex.next()
 		return nil
 	}
+
 	exp.Operation = parseOperation(lex)
 
 	var args []shared.ExpArgument
+
+	prefixes := make(map[string]bool)
 out:
 	for {
 		switch {
@@ -59,11 +60,17 @@ out:
 		case lex.token == symbols.ParClose:
 			lex.next()
 			break out
+		case lex.token == symbols.Minus:
+			prefixes["minus"] = true
 		default:
 			val, err := shared.CreateValue(lex.text())
 			if err != nil {
 				args = append(args, shared.ArgVariable{Value: lex.text()})
 			} else {
+				if val.Type() == shared.TypeNum && prefixes["minus"] {
+					val, _ = shared.CreateValue("-" + val.StrVal())
+					prefixes["minus"] = false
+				}
 				args = append(args, shared.ArgValue{Value: val})
 			}
 			lex.next()
@@ -77,17 +84,4 @@ func parseOperation(lex *lexer) string {
 	op := lex.text()
 	lex.next()
 	return op
-}
-
-func isVariable(lex *lexer) bool {
-	txt := lex.text()
-	if strings.HasPrefix(txt, "\"") && strings.HasSuffix(txt, "\"") {
-		return false
-	}
-
-	if _, err := strconv.ParseFloat(txt, 64); err == nil {
-		return false
-	}
-
-	return true
 }

@@ -21,5 +21,5 @@ func EvalExp(input io.Reader) interface{} {
 	exp := parse.Parse(input)[0]
 	scope := shared.CreateScope(nil)
 	res := eval.Eval(scope, exp)
-	return res
+	return res.StrVal()
 }

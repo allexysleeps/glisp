@@ -80,7 +80,7 @@ func (v value) StrVal() string {
 		}
 		return "false"
 	case TypeNum:
-		return fmt.Sprintf("%f", v.numVal)
+		return strconv.FormatFloat(v.numVal, 'f', -1, 64)
 	}
 	return ""
 }
