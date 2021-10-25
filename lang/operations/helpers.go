@@ -11,7 +11,6 @@ func argValue(scope *shared.Scope, eval shared.Evaluator, arg shared.ExpArgument
 		return arg.(shared.ArgValue).Value, nil
 	case shared.TypeVariable:
 		vName := arg.(shared.ArgVariable).Value
-		fmt.Println(vName)
 		vVal, ok := scope.Get(vName)
 		if !ok {
 			return nil, shared.CreateRootError(shared.ErrUndefined, fmt.Sprintf("undefined variable [%s]", vName), "")

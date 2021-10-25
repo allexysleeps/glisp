@@ -4,7 +4,13 @@ import (
 	"glisp/lang/shared"
 )
 
-func calcArgs(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator, operation string, calc func(a, b float64) float64) (shared.Value, *shared.Err) {
+func calcArgs(
+	scope *shared.Scope,
+	exp *shared.Expression,
+	eval shared.Evaluator,
+	operation string,
+	calc func(a, b float64) float64) (shared.Value, *shared.Err,
+) {
 	var r float64
 	for i, arg := range exp.Arguments {
 		val, err := argValue(scope, eval, arg)

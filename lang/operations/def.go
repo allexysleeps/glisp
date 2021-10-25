@@ -53,9 +53,8 @@ func DefFn(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (
 	}
 
 	fExp := expArg.(shared.ArgExpression).Value
-	fScope := shared.CreateScope(scope)
 
-	fVar := shared.CreateFunctionVar(fName, fExp, *fScope, fArgs)
+	fVar := shared.CreateFunctionVar(fName, fExp, fArgs)
 	scope.Set(fVar)
 
 	return nil, nil

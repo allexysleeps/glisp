@@ -13,7 +13,8 @@ func Function(fName string, parentScope *shared.Scope, parentExp shared.Expressi
 	if val.Type() != shared.VarFn {
 		return nil, shared.CreateRootError(shared.ErrUndefined, fmt.Sprintf("%scope is not a function", fName), "")
 	}
-	exp, scope, fArgs := val.Exec()
+	exp, fArgs := val.Exec()
+	scope := shared.CreateScope(parentScope)
 	if len(fArgs) != len(parentExp.Arguments) {
 		return nil, shared.CreateRootError(shared.ErrArgAmount, fmt.Sprintf(
 			"wrong amount of arguments provided to %scope want %d, got %d", fName, len(fArgs), len(parentExp.Arguments)),
@@ -26,5 +27,5 @@ func Function(fName string, parentScope *shared.Scope, parentExp shared.Expressi
 		}
 		scope.Set(shared.CreateValueVar(argName, argVal))
 	}
-	return eval(&scope, *exp)
+	return eval(scope, *exp)
 }

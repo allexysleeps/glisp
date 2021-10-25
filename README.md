@@ -1,5 +1,17 @@
 # Glisp
-### Simple lisp implementation on Golang just for fun and self education.
+#### Simple lisp implementation on Golang just for fun and self education.
+### Code examples
+#### Factorial
+
+```
+(fn factorial [num]
+    (if (eql num 1)
+        num
+        (mult
+            (factorial (sub num 1))
+            num)))
+(print (factorial 10)) // 3628800
+```
 
 ## Usage
 `go build` to build binary
@@ -34,6 +46,7 @@
 | operation | arguments | description | example |
 |---|---|---|---|
 | def | 2 (name, value) | define a variable | `(def a 10) // 10` |
+| fn | 3 (name, [args...], exp) | define a function | `(fn inc [arg] (sum arg 1))` `(inc 5) // 6` |
 
 #### CMD
 | operation | arguments | description | example |

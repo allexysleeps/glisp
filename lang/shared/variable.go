@@ -11,7 +11,7 @@ type Variable interface {
 	Type() varType
 	Name() string
 	Value() Value
-	Exec() (*Expression, Scope, []string)
+	Exec() (*Expression, []string)
 }
 
 type primVar struct {
@@ -29,16 +29,15 @@ func (v *primVar) Name() string {
 func (v *primVar) Value() Value {
 	return v.value
 }
-func (v *primVar) Exec() (*Expression, Scope, []string) {
-	return nil, Scope{}, []string{}
+func (v *primVar) Exec() (*Expression, []string) {
+	return nil, []string{}
 }
 
 type funcVar struct {
-	t     varType
-	name  string
-	exp   *Expression
-	scope Scope
-	args  []string
+	t    varType
+	name string
+	exp  *Expression
+	args []string
 }
 
 func (v *funcVar) Type() varType {
@@ -50,14 +49,14 @@ func (v *funcVar) Name() string {
 func (v *funcVar) Value() Value {
 	return nil
 }
-func (v *funcVar) Exec() (*Expression, Scope, []string) {
-	return v.exp, v.scope, v.args
+func (v *funcVar) Exec() (*Expression, []string) {
+	return v.exp, v.args
 }
 
 func CreateValueVar(name string, value Value) Variable {
 	return &primVar{t: VarPrimitive, name: name, value: value}
 }
 
-func CreateFunctionVar(name string, exp *Expression, scope Scope, args []string) Variable {
-	return &funcVar{t: VarFn, name: name, exp: exp, scope: scope, args: args}
+func CreateFunctionVar(name string, exp *Expression, args []string) Variable {
+	return &funcVar{t: VarFn, name: name, exp: exp, args: args}
 }

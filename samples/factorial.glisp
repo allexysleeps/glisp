@@ -1,0 +1,7 @@
+(fn factorial [num]
+    (if (eql num 1)
+        num
+        (mult
+            (factorial (sub num 1))
+            num)))
+(print (factorial 10))

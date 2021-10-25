@@ -1,7 +1,5 @@
 package shared
 
-import "fmt"
-
 type Scope struct {
 	Vars   map[string]Variable
 	Parent *Scope
@@ -18,7 +16,6 @@ func (s *Scope) Get(name string) (Variable, bool) {
 	if s.Parent != nil {
 		return s.Parent.Get(name)
 	}
-	fmt.Println("here")
 	return nil, false
 }
 
