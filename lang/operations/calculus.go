@@ -10,7 +10,7 @@ func calcArgs(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator, calc 
 		var diff float64
 		switch arg.Type() {
 		case shared.TypeValue:
-			diff = getNumArg(arg)
+			diff = arg.(shared.ArgValue).NumVal()
 		case shared.TypeVariable:
 			variable := scope.Get(arg.(shared.ArgVariable).Value)
 			val, err := variable.NumVal()

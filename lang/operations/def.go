@@ -19,7 +19,7 @@ func Def(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) *shared.Va
 	var val string
 	switch exp.Arguments[1].Type() {
 	case shared.TypeValue:
-		val = exp.Arguments[1].(shared.ArgValue).Value
+		val = exp.Arguments[1].(shared.ArgValue).StrVal()
 	case shared.TypeExp:
 		val = fmt.Sprintf("%v", eval(scope, *exp.Arguments[1].(shared.ArgExp).Value))
 	}
