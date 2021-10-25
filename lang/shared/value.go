@@ -101,3 +101,18 @@ func CreateValue(s string) (Value, error) {
 	}
 	return value{}, fmt.Errorf("%s is not a value", s)
 }
+
+func CreateValueOfType(t ValType, val interface{}) Value {
+	var v Value
+	switch t {
+	case TypeStr:
+		v = value{t: t, strVal: val.(string)}
+	case TypeNum:
+		v = value{t: t, numVal: val.(float64)}
+	case TypeBool:
+		v = value{t: t, boolVal: val.(bool)}
+	case TypeNull:
+		v = value{t: t}
+	}
+	return v
+}

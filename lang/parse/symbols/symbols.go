@@ -4,5 +4,5 @@ const (
 	ParOpen  = '('
 	ParClose = ')'
 	Quote    = '"'
-	Minus = '-'
+	Minus    = '-'
 )

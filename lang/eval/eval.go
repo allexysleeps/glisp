@@ -6,27 +6,31 @@ import (
 	"log"
 )
 
+type operation = func(s *shared.Scope, e *shared.Exp, eval shared.Evaluator) shared.Value
+
+var operationsMap = map[string]operation{
+	// calculus
+	"sum":  operations.Sum,
+	"sub":  operations.Sub,
+	"mult": operations.Mult,
+	"div":  operations.Div,
+	// logical
+	"if": operations.If,
+	// define
+	"def": operations.Def,
+	//cmd
+	"print": operations.Print,
+}
+
 func Eval(parentScope *shared.Scope, exp shared.Exp) shared.Value {
 	return eval(parentScope, exp)
 }
 
 func eval(scope *shared.Scope, exp shared.Exp) shared.Value {
-	switch exp.Operation {
-	case "sum":
-		return operations.Sum(scope, &exp, eval)
-	case "sub":
-		return operations.Sub(scope, &exp, eval)
-	case "mult":
-		return operations.Mult(scope, &exp, eval)
-	case "div":
-		return operations.Div(scope, &exp, eval)
-	case "print":
-		operations.Print(scope, &exp, eval)
-		return nil
-	case "def":
-		return operations.Def(scope, &exp, eval)
-	default:
+	op, ok := operationsMap[exp.Operation]
+	if !ok {
 		log.Printf("undefined operation %v\n", exp.Operation)
+		return nil
 	}
-	return nil
+	return op(scope, &exp, eval)
 }

@@ -1,1 +1,10 @@
-(def a 5) (def b (mult a a)) (print (sum a b))
+(def a 5)
+(def b (mult a a))
+(print (sum a b))
+
+(def s "hello world")
+(print s)
+
+(def c (sum -10 3 7))
+(def res (if cond "truth" "lie"))
+(print res)

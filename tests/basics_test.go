@@ -32,6 +32,14 @@ func TestEval(t *testing.T) {
 			input: "(sum (div 100 2 (sum 2 3)) (sub 20 7 3))",
 			want:  "20",
 		},
+		{
+			input: "(if true 10 20)",
+			want:  "10",
+		},
+		{
+			input: "(if false 10 20)",
+			want:  "20",
+		},
 	}
 	for _, tst := range tests {
 		if res := fmt.Sprintf("%v", lang.EvalExp(strings.NewReader(tst.input))); res != tst.want {

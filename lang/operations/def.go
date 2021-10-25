@@ -16,13 +16,8 @@ func Def(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Val
 		panic(fmt.Errorf("invalid variable name %v", varName))
 	}
 
-	var val shared.Value
-	switch exp.Arguments[1].Type() {
-	case shared.TypeValue:
-		val = exp.Arguments[1].(shared.ArgValue).Value
-	case shared.TypeExp:
-		val = eval(scope, *exp.Arguments[1].(shared.ArgExp).Value).(shared.Value)
-	}
+	val := argValue(scope, eval, exp.Arguments[1])
+
 	variable := shared.Variable{
 		Name:  varName.Value,
 		Value: val,
