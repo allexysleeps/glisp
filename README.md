@@ -29,3 +29,6 @@
 (def b (mult a a))
 (print (sum a b)) // 30
 ```
+## Contribution
+#### Tests
+`go test -v ./...`
