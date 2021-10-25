@@ -11,7 +11,7 @@ type ExpArgument interface {
 }
 
 type ArgValue struct {
-	Value string
+	Value
 }
 
 type ArgExp struct {

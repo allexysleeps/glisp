@@ -59,11 +59,13 @@ out:
 		case lex.token == symbols.ParClose:
 			lex.next()
 			break out
-		case isVariable(lex):
-			args = append(args, shared.ArgVariable{Value: lex.text()})
-			lex.next()
 		default:
-			args = append(args, shared.ArgValue{Value: lex.text()})
+			val, err := shared.CreateValue(lex.text())
+			if err != nil {
+				args = append(args, shared.ArgVariable{Value: lex.text()})
+			} else {
+				args = append(args, shared.ArgValue{Value: val})
+			}
 			lex.next()
 		}
 	}
