@@ -10,6 +10,8 @@
 
 ## Supported syntax
 ### Operators
+
+#### Calculus
 | operation | arguments | description | example |
 |---|---|---|---|
 | sum | 2...N (num) | add N numbers | `(sum 1 2 3) // 6`|
@@ -18,6 +20,24 @@
 | div | 2...N (num) | add N numbers | `(div 25 5 2) // 2.5` |
 | if | 3 (bool, successValue, failValue) | if condition call successValue on true and failValue on false | `(if true 5 2) // 5` |
 | def | 2 (name, value) | define a variable | `(def a 10) // 10` |
+| print | 1 any | print arg to console log | `(print "hello world") // hello world` |
+
+### Logical
+| operation | arguments | description | example |
+|---|---|---|---|
+| if | 3 (bool, successValue, failValue) | if condition call successValue on true and failValue on false | `(if true 5 2) // 5` |
+| eql | 2 (v1, v2) | check if variables are equal, type including | `(eql 10 10) // true` `(eql "10" 10) // false` |
+| more | 2 (v1, v2) | check if v1 > v2 | `(more 10 5) // true` |
+| moreEq | 2 (v1, v2) | check if v1 >= v2 | `(moreEq 10 10) // true` |
+
+#### Defining
+| operation | arguments | description | example |
+|---|---|---|---|
+| def | 2 (name, value) | define a variable | `(def a 10) // 10` |
+
+#### CMD
+| operation | arguments | description | example |
+|---|---|---|---|
 | print | 1 any | print arg to console log | `(print "hello world") // hello world` |
 
 ### Nested expressions
