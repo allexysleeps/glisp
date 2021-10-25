@@ -5,8 +5,11 @@ import (
 	"glisp/lang/shared"
 )
 
-func Print(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Value {
-	val := argValue(scope, eval, exp.Arguments[0])
+func Print(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	val, err := argValue(scope, eval, exp.Arguments[0])
+	if err != nil {
+		return nil, shared.CreateErrStack("print", err)
+	}
 	fmt.Println(val.StrVal())
-	return val
+	return val, nil
 }

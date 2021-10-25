@@ -29,4 +29,5 @@ func (v ArgExp) Type() string      { return TypeExp }
 type Exp struct {
 	Operation string
 	Arguments []ExpArgument
+	Errors    []Err
 }

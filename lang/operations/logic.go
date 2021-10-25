@@ -1,49 +1,72 @@
 package operations
 
 import (
-	"fmt"
 	"glisp/lang/shared"
 )
 
-func If(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Value {
-	if len(exp.Arguments) < 3 {
-		panic(fmt.Errorf("invalid ammount of arguments provided to %v: %d want: %d",
-			exp.Operation, len(exp.Arguments), 3))
+func If(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 3)
+	if !ok {
+		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "if")
 	}
-	cond := argValue(scope, eval, exp.Arguments[0]).BoolVal()
-	if cond {
-		return argValue(scope, eval, exp.Arguments[1])
+	cond, err := argValue(scope, eval, exp.Arguments[0])
+	if err != nil {
+		shared.CreateErrStack("if", err)
 	}
-	return argValue(scope, eval, exp.Arguments[2])
+	if cond.BoolVal() {
+		val, err := argValue(scope, eval, exp.Arguments[1])
+		if err != nil {
+			return nil, shared.CreateErrStack("if", err)
+		}
+		return val, nil
+	}
+	val, err := argValue(scope, eval, exp.Arguments[2])
+	if err != nil {
+		return nil, shared.CreateErrStack("if", err)
+	}
+	return val, nil
 }
 
-func Eql(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Value {
-	if len(exp.Arguments) < 2 {
-		panic(fmt.Errorf("invalid ammount of arguments provided to %v: %d want: %d",
-			exp.Operation, len(exp.Arguments), 2))
+func Eql(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	if !ok {
+		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "eql")
 	}
-	v1 := argValue(scope, eval, exp.Arguments[0])
-	v2 := argValue(scope, eval, exp.Arguments[1])
+	v1, err := argValue(scope, eval, exp.Arguments[0])
+	if err != nil {
+		return nil, shared.CreateErrStack("eql", err)
+	}
+	v2, err := argValue(scope, eval, exp.Arguments[1])
+	if err != nil {
+		return nil, shared.CreateErrStack("eql", err)
+	}
 	if v1.Type() != v2.Type() {
-		return shared.CreateValueOfType(shared.TypeBool, false)
+		return shared.CreateValueOfType(shared.TypeBool, false), nil
 	}
-	return shared.CreateValueOfType(shared.TypeBool, v1.StrVal() == v2.StrVal())
+	return shared.CreateValueOfType(shared.TypeBool, v1.StrVal() == v2.StrVal()), nil
 }
 
-func More(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Value {
-	return compareNumArgs(scope, exp, eval, func(a, b float64) bool { return a > b })
+func More(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	return compareNumArgs(scope, exp, eval, "more", func(a, b float64) bool { return a > b })
 }
 
-func MoreEq(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) shared.Value {
-	return compareNumArgs(scope, exp, eval, func(a, b float64) bool { return a >= b })
+func MoreEq(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	return compareNumArgs(scope, exp, eval, "moreEq", func(a, b float64) bool { return a >= b })
 }
 
-func compareNumArgs(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator, comp func(a, b float64) bool) shared.Value {
-	if len(exp.Arguments) < 2 {
-		panic(fmt.Errorf("invalid ammount of arguments provided to %v: %d want: %d",
-			exp.Operation, len(exp.Arguments), 2))
+func compareNumArgs(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator, operation string, comp func(a, b float64) bool) (shared.Value, *shared.Err) {
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	if !ok {
+		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, operation)
 	}
-	v1 := argValue(scope, eval, exp.Arguments[0]).NumVal()
-	v2 := argValue(scope, eval, exp.Arguments[1]).NumVal()
-	return shared.CreateValueOfType(shared.TypeBool, comp(v1, v2))
+
+	v1, err := argValue(scope, eval, exp.Arguments[0])
+	if err != nil {
+		return nil, shared.CreateErrStack(operation, err)
+	}
+	v2, err := argValue(scope, eval, exp.Arguments[1])
+	if err != nil {
+		return nil, shared.CreateErrStack(operation, err)
+	}
+	return shared.CreateValueOfType(shared.TypeBool, comp(v1.NumVal(), v2.NumVal())), nil
 }
