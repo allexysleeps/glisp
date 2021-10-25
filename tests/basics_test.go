@@ -40,6 +40,30 @@ func TestEval(t *testing.T) {
 			input: "(if false 10 20)",
 			want:  "20",
 		},
+		{
+			input: "(eql 5 5)",
+			want:  "true",
+		},
+		{
+			input: "(eql 5 6)",
+			want:  "false",
+		},
+		{
+			input: "(more 7 6)",
+			want:  "true",
+		},
+		{
+			input: "(more 5 6)",
+			want:  "false",
+		},
+		{
+			input: "(moreEq 6 6)",
+			want:  "true",
+		},
+		{
+			input: "(moreEq 9 6)",
+			want:  "true",
+		},
 	}
 	for _, tst := range tests {
 		if res := fmt.Sprintf("%v", lang.EvalExp(strings.NewReader(tst.input))); res != tst.want {

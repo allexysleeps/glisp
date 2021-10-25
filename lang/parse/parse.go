@@ -62,6 +62,7 @@ out:
 			break out
 		case lex.token == symbols.Minus:
 			prefixes["minus"] = true
+			lex.next()
 		default:
 			val, err := shared.CreateValue(lex.text())
 			if err != nil {

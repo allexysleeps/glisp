@@ -5,6 +5,6 @@
 (def s "hello world")
 (print s)
 
-(def c (sum -10 3 7))
+(def cond (sum -10 3 7))
 (def res (if cond "truth" "lie"))
 (print res)

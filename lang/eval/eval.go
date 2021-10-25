@@ -15,7 +15,10 @@ var operationsMap = map[string]operation{
 	"mult": operations.Mult,
 	"div":  operations.Div,
 	// logical
-	"if": operations.If,
+	"if":     operations.If,
+	"eql":    operations.Eql,
+	"more":   operations.More,
+	"moreEq": operations.MoreEq,
 	// define
 	"def": operations.Def,
 	//cmd
