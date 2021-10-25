@@ -4,7 +4,7 @@ import (
 	"glisp/lang/shared"
 )
 
-func If(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func If(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 3)
 	if !ok {
 		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "if")
@@ -27,7 +27,7 @@ func If(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Val
 	return val, nil
 }
 
-func Eql(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func Eql(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
 	if !ok {
 		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "eql")
@@ -46,15 +46,15 @@ func Eql(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Va
 	return shared.CreateValueOfType(shared.TypeBool, v1.StrVal() == v2.StrVal()), nil
 }
 
-func More(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func More(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	return compareNumArgs(scope, exp, eval, "more", func(a, b float64) bool { return a > b })
 }
 
-func MoreEq(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func MoreEq(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	return compareNumArgs(scope, exp, eval, "moreEq", func(a, b float64) bool { return a >= b })
 }
 
-func compareNumArgs(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator, operation string, comp func(a, b float64) bool) (shared.Value, *shared.Err) {
+func compareNumArgs(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator, operation string, comp func(a, b float64) bool) (shared.Value, *shared.Err) {
 	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
 	if !ok {
 		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, operation)

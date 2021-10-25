@@ -6,22 +6,21 @@ import (
 )
 
 func argValue(scope *shared.Scope, eval shared.Evaluator, arg shared.ExpArgument) (shared.Value, *shared.Err) {
-	var val shared.Value
-	var err *shared.Err
 	switch arg.Type() {
 	case shared.TypeValue:
-		val = arg.(shared.ArgValue).Value
+		return arg.(shared.ArgValue).Value, nil
 	case shared.TypeVariable:
-		vname := arg.(shared.ArgVariable).Value
-		vval, ok := scope.Get(vname)
-		val = vval
+		vName := arg.(shared.ArgVariable).Value
+		fmt.Println(vName)
+		vVal, ok := scope.Get(vName)
 		if !ok {
-			err = shared.CreateRootError(shared.ErrUndefined, fmt.Sprintf("undefined variable [%s]", vname), "")
+			return nil, shared.CreateRootError(shared.ErrUndefined, fmt.Sprintf("undefined variable [%s]", vName), "")
 		}
+		return vVal.Value(), nil
 	case shared.TypeExp:
-		val, err = eval(scope, *arg.(shared.ArgExp).Value)
+		return eval(scope, *arg.(shared.ArgExpression).Value)
 	}
-	return val, err
+	return nil, nil
 }
 
 func argLenErrorMsg(amount, required int) (string, bool) {

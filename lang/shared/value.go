@@ -1,7 +1,6 @@
 package shared
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -85,21 +84,21 @@ func (v value) StrVal() string {
 	return ""
 }
 
-func CreateValue(s string) (Value, error) {
+func CreateValue(s string) (Value, bool) {
 	num, err := strconv.ParseFloat(s, 64)
 	if err == nil {
-		return value{t: TypeNum, numVal: num}, nil
+		return value{t: TypeNum, numVal: num}, true
 	}
 	if s == "true" {
-		return value{t: TypeBool, boolVal: true}, nil
+		return value{t: TypeBool, boolVal: true}, true
 	}
 	if s == "false" {
-		return value{t: TypeBool, boolVal: false}, nil
+		return value{t: TypeBool, boolVal: false}, true
 	}
 	if strings.HasPrefix(s, "\"") && strings.HasSuffix(s, "\"") {
-		return value{t: TypeStr, strVal: s}, nil
+		return value{t: TypeStr, strVal: s}, true
 	}
-	return value{}, fmt.Errorf("%s is not a value", s)
+	return value{}, false
 }
 
 func CreateValueOfType(t ValType, val interface{}) Value {

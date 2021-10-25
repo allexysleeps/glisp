@@ -1,0 +1,3 @@
+(fn inc [arg] (sum arg 1))
+(print (inc 5))
+

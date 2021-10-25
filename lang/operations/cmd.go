@@ -5,7 +5,7 @@ import (
 	"glisp/lang/shared"
 )
 
-func Print(scope *shared.Scope, exp *shared.Exp, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func Print(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	val, err := argValue(scope, eval, exp.Arguments[0])
 	if err != nil {
 		return nil, shared.CreateErrStack("print", err)

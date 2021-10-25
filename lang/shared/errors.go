@@ -5,9 +5,10 @@ import "fmt"
 type errType string
 
 const (
-	ErrUndefined errType = "ErrUndefined"
-	ErrArgAmount errType = "ErrArgAmount"
-	ErrUnhandled errType = "ErrUnhandled"
+	ErrUndefined   errType = "ErrUndefined"
+	ErrArgAmount   errType = "ErrArgAmount"
+	ErrWrongSyntax errType = "ErrWrongSyntax"
+	ErrUnhandled   errType = "ErrUnhandled"
 )
 
 type Err struct {

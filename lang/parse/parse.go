@@ -16,9 +16,9 @@ type lexer struct {
 func (lex *lexer) next()        { lex.token = lex.scan.Scan() }
 func (lex *lexer) text() string { return lex.scan.TokenText() }
 
-func Parse(input io.Reader) []shared.Exp {
+func Parse(input io.Reader) []shared.Expression {
 	lex := new(lexer)
-	var expressions []shared.Exp
+	var expressions []shared.Expression
 	lex.scan.Init(input)
 	lex.scan.Mode =
 		scanner.ScanIdents | scanner.ScanInts | scanner.ScanFloats | scanner.ScanStrings | scanner.SkipComments
@@ -37,8 +37,8 @@ out:
 	return expressions
 }
 
-func parseExp(lex *lexer) *shared.Exp {
-	var exp shared.Exp
+func parseExp(lex *lexer) *shared.Expression {
+	var exp shared.Expression
 
 	lex.next()
 
@@ -56,17 +56,27 @@ out:
 	for {
 		switch {
 		case lex.token == symbols.ParOpen:
-			args = append(args, shared.ArgExp{Value: parseExp(lex)})
+			args = append(args, shared.ArgExpression{Value: parseExp(lex)})
 		case lex.token == symbols.ParClose:
 			lex.next()
 			break out
 		case lex.token == symbols.Minus:
 			prefixes["minus"] = true
 			lex.next()
+		case lex.token == symbols.SquareBracketOpen:
+			prefixes["squareOpen"] = true
+			lex.next()
+		case lex.token == symbols.SquareBracketClose:
+			prefixes["squareOpen"] = false
+			lex.next()
 		default:
-			val, err := shared.CreateValue(lex.text())
-			if err != nil {
-				args = append(args, shared.ArgVariable{Value: lex.text()})
+			val, ok := shared.CreateValue(lex.text())
+			if !ok {
+				if prefixes["squareOpen"] {
+					args = append(args, shared.ArgArgument{Value: lex.text()})
+				} else {
+					args = append(args, shared.ArgVariable{Value: lex.text()})
+				}
 			} else {
 				if val.Type() == shared.TypeNum && prefixes["minus"] {
 					val, _ = shared.CreateValue("-" + val.StrVal())

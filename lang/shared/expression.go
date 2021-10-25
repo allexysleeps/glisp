@@ -4,6 +4,7 @@ const (
 	TypeValue    = "value"
 	TypeExp      = "expression"
 	TypeVariable = "variable"
+	TypeArgument = "argument"
 )
 
 type ExpArgument interface {
@@ -14,19 +15,24 @@ type ArgValue struct {
 	Value
 }
 
-type ArgExp struct {
-	Value *Exp
+type ArgExpression struct {
+	Value *Expression
 }
 
 type ArgVariable struct {
 	Value string
 }
 
-func (v ArgValue) Type() string    { return TypeValue }
-func (v ArgVariable) Type() string { return TypeVariable }
-func (v ArgExp) Type() string      { return TypeExp }
+type ArgArgument struct {
+	Value string
+}
 
-type Exp struct {
+func (v ArgValue) Type() string      { return TypeValue }
+func (v ArgVariable) Type() string   { return TypeVariable }
+func (v ArgExpression) Type() string { return TypeExp }
+func (v ArgArgument) Type() string   { return TypeArgument }
+
+type Expression struct {
 	Operation string
 	Arguments []ExpArgument
 	Errors    []Err
