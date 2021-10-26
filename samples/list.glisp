@@ -4,4 +4,3 @@
 (fn inc [i] (sum i 1))
 (def arr2 (map inc arr))
 (print arr2)
-(print arr)

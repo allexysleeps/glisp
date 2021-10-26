@@ -12,6 +12,16 @@
             num)))
 (print (factorial 10)) // 3628800
 ```
+#### increment list items
+```
+(def arr (list 1 2 3 4 5 6 7 8 9))
+(print arr) // 1 2 3 4 5 6 7 8 9
+
+(fn inc [i] (sum i 1))
+(def arr2 (map inc arr))
+(print arr2) // 2 3 4 5 6 7 8 9 10
+
+```
 
 ## Usage
 `go build` to build binary
