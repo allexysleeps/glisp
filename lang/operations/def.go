@@ -8,12 +8,13 @@ import (
 func Def(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
 	if !ok {
-		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "dev")
+		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "def")
 	}
 
 	varName, ok := exp.Arguments[0].(shared.ArgVariable)
 	if !ok {
-		panic(fmt.Errorf("invalid variable name %v", varName))
+		return nil, shared.CreateRootError(
+			shared.ErrArgAmount, fmt.Sprintf("invalid variable name %v", varName), "def")
 	}
 
 	val, err := argValue(scope, eval, exp.Arguments[1])
@@ -28,34 +29,18 @@ func Def(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 	return variable.Value(), nil
 }
 
-func DefFn(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
-	if exp.Arguments[0].Type() != shared.TypeVariable {
-		return nil, shared.CreateRootError(shared.ErrWrongSyntax, fmt.Sprintf("incorrect function name %v", exp.Arguments[0]), "fn")
-	}
-	fName := exp.Arguments[0].(shared.ArgVariable).Value
-	var arity int
-	var fArgs []string
-	for i, arg := range exp.Arguments[1:] {
-		if arg.Type() != shared.TypeArgument {
-			arity = i
-			break
+func List(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	var values []shared.Value
+
+	for _, arg := range exp.Arguments {
+		val, err := argValue(scope, eval, arg)
+		if err != nil {
+			return nil, shared.CreateErrStack("list", err)
 		}
-		fArgs = append(fArgs, arg.(shared.ArgArgument).Value)
+		values = append(values, val)
 	}
 
-	if len(exp.Arguments) != arity+2 {
-		return nil, shared.CreateRootError(shared.ErrWrongSyntax, fmt.Sprintf("incorrect function syntax for %s, incorrect arg amount", fName), "fn")
-	}
+	val := shared.CreateValueOfType(shared.TypeList, &values)
 
-	expArg := exp.Arguments[arity+1]
-	if expArg.Type() != shared.TypeExp {
-		return nil, shared.CreateRootError(shared.ErrWrongSyntax, fmt.Sprintf("incorrect function syntax for %s", fName), "fn")
-	}
-
-	fExp := expArg.(shared.ArgExpression).Value
-
-	fVar := shared.CreateFunctionVar(fName, fExp, fArgs)
-	scope.Set(fVar)
-
-	return nil, nil
+	return val, nil
 }

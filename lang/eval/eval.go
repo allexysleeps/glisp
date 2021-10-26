@@ -21,7 +21,10 @@ var operationsMap = map[string]operation{
 	// define
 	"def": operations.Def,
 	"fn":  operations.DefFn,
-	//cmd
+	// list
+	"list": operations.List,
+	"map":  operations.Map,
+	// cmd
 	"print": operations.Print,
 }
 

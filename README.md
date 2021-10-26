@@ -48,6 +48,12 @@
 | def | 2 (name, value) | define a variable | `(def a 10) // 10` |
 | fn | 3 (name, [args...], exp) | define a function | `(fn inc [arg] (sum arg 1))` `(inc 5) // 6` |
 
+### List
+| operation | arguments | description | example |
+|---|---|---|---|
+| list | 0...N | create a list value | `(list 1 2 3) // (1 2 3)` |
+| map | 2 (fn, list) | you know map | `(fn inc [arg] (sum arg 1)) (map inc (list 1 2 3)) // (2 3 4)` |
+
 #### CMD
 | operation | arguments | description | example |
 |---|---|---|---|

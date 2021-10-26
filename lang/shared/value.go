@@ -12,6 +12,7 @@ const (
 	TypeNum  ValType = "num"
 	TypeBool ValType = "bool"
 	TypeStr  ValType = "str"
+	TypeList ValType = "list"
 )
 
 type Value interface {
@@ -20,6 +21,7 @@ type Value interface {
 	NumVal() float64
 	BoolVal() bool
 	StrVal() string
+	ListVal() *[]Value
 }
 
 type value struct {
@@ -27,6 +29,7 @@ type value struct {
 	numVal  float64
 	boolVal bool
 	strVal  string
+	listVal *[]Value
 }
 
 func (v value) Type() ValType { return v.t }
@@ -47,6 +50,8 @@ func (v value) NumVal() float64 {
 			return 1
 		}
 		return 0
+	case TypeList:
+		return float64(len(*v.listVal))
 	}
 	return 0
 }
@@ -65,6 +70,11 @@ func (v value) BoolVal() bool {
 			return true
 		}
 		return false
+	case TypeList:
+		if len(*v.listVal) > 0 {
+			return true
+		}
+		return false
 	}
 	return false
 }
@@ -80,8 +90,21 @@ func (v value) StrVal() string {
 		return "false"
 	case TypeNum:
 		return strconv.FormatFloat(v.numVal, 'f', -1, 64)
+	case TypeList:
+		var strVals []string
+		for _, val := range *v.listVal {
+			strVals = append(strVals, val.StrVal())
+		}
+		return strings.Join(strVals, ",")
 	}
 	return ""
+}
+
+func (v value) ListVal() *[]Value {
+	if v.t == TypeList {
+		return v.listVal
+	}
+	return nil
 }
 
 func CreateValue(s string) (Value, bool) {
@@ -112,6 +135,8 @@ func CreateValueOfType(t ValType, val interface{}) Value {
 		v = value{t: t, boolVal: val.(bool)}
 	case TypeNull:
 		v = value{t: t}
+	case TypeList:
+		v = value{t: t, listVal: val.(*[]Value)}
 	}
 	return v
 }
