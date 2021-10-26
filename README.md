@@ -22,6 +22,20 @@
 (print arr2) // 2 3 4 5 6 7 8 9 10
 
 ```
+#### sum list items
+```
+(def nums (list 1 2 3 4 5))
+
+(fn sumNums [nums]
+    (if (eql (length nums) 1)
+        (get 0 nums)
+        (sum
+            (sumNums (sublist nums 0 (sub (length nums) 2)))
+            (get (sub (length nums) 1) nums))
+))
+
+(print (sumNums nums))
+```
 
 ## Usage
 `go build` to build binary

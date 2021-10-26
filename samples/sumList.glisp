@@ -1,3 +1,11 @@
 (def nums (list 1 2 3 4 5))
-(print "nums:")
-(print nums)
+
+(fn sumNums [nums]
+    (if (eql (length nums) 1)
+        (get 0 nums)
+        (sum
+            (sumNums (sublist nums 0 (sub (length nums) 2)))
+            (get (sub (length nums) 1) nums))
+))
+
+(print (sumNums nums))

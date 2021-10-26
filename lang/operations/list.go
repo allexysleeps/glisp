@@ -21,6 +21,23 @@ func List(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (s
 	return val, nil
 }
 
+func Length(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 1)
+	if !ok {
+		return nil, shared.CreateRootError(shared.ErrArgAmount, errMsg, "length")
+	}
+
+	list, err := argValue(scope, eval, exp.Arguments[0])
+	if err != nil {
+		return nil, shared.CreateErrStack("length", err)
+	}
+	if list.Type() != shared.TypeList {
+		return nil, shared.CreateRootError(shared.ErrWrongSyntax, "arg provided at 1 to get is not of a list type", "length")
+	}
+
+	return shared.CreateValueOfType(shared.TypeNum, float64(len(*list.ListVal()))), nil
+}
+
 func Get(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
 	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
 	if !ok {
@@ -40,7 +57,7 @@ func Get(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 		return nil, shared.CreateErrStack("map", err)
 	}
 	if list.Type() != shared.TypeList {
-		return nil, shared.CreateRootError(shared.ErrWrongSyntax, "arg provided at 1 to get is not of a list type", "get")
+		return nil, shared.CreateRootError(shared.ErrWrongSyntax, "arg provided at 2 to get is not of a list type", "get")
 	}
 
 	listValues := list.ListVal()

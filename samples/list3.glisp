@@ -1,0 +1,7 @@
+(def nums (list 1 2 3 4 5))
+
+(fn printItems [nums]
+        (print nums)
+)
+
+(print (printItems nums))

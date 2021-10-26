@@ -23,6 +23,7 @@ var operationsMap = map[string]operation{
 	"fn":  operations.DefFn,
 	// list
 	"list":    operations.List,
+	"length":  operations.Length,
 	"map":     operations.Map,
 	"get":     operations.Get,
 	"sublist": operations.SubList,
