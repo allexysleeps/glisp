@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) == 1 {
-		file, err := os.Open("samples/list.glisp")
+		file, err := os.Open("samples/sumList.glisp")
 		if err != nil {
 			log.Fatal(err)
 		}

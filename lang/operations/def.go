@@ -28,19 +28,3 @@ func Def(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 
 	return variable.Value(), nil
 }
-
-func List(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
-	var values []shared.Value
-
-	for _, arg := range exp.Arguments {
-		val, err := argValue(scope, eval, arg)
-		if err != nil {
-			return nil, shared.CreateErrStack("list", err)
-		}
-		values = append(values, val)
-	}
-
-	val := shared.CreateValueOfType(shared.TypeList, &values)
-
-	return val, nil
-}
