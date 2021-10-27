@@ -104,7 +104,7 @@ func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator)
 		end = argsLen - 1
 	}
 
-	newList := (*list.ListVal())[int(start.NumVal()):end]
+	newList := (*list.ListVal())[int(start.NumVal()) : end+1]
 
 	return shared.CreateValueOfType(shared.TypeList, &newList), nil
 }
