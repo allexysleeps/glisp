@@ -23,12 +23,15 @@ type primVar struct {
 func (v *primVar) Type() varType {
 	return v.t
 }
+
 func (v *primVar) Name() string {
 	return v.name
 }
+
 func (v *primVar) Value() Value {
 	return v.value
 }
+
 func (v *primVar) Exec() (*Expression, []string) {
 	return nil, []string{}
 }
@@ -43,12 +46,15 @@ type funcVar struct {
 func (v *funcVar) Type() varType {
 	return v.t
 }
+
 func (v *funcVar) Name() string {
 	return v.name
 }
+
 func (v *funcVar) Value() Value {
 	return nil
 }
+
 func (v *funcVar) Exec() (*Expression, []string) {
 	return v.exp, v.args
 }

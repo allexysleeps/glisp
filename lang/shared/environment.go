@@ -13,9 +13,11 @@ func (s *Scope) Get(name string) (Variable, bool) {
 	if v, ok := s.Vars[name]; ok {
 		return v, true
 	}
+
 	if s.Parent != nil {
 		return s.Parent.Get(name)
 	}
+
 	return nil, false
 }
 

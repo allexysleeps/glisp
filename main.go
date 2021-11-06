@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"glisp/lang"
 	"log"
 	"os"
 	"strings"
+
+	"glisp/lang"
 )
 
 func main() {
@@ -23,10 +23,10 @@ func main() {
 			panic("Missing expression to eval")
 		}
 		exp := os.Args[2]
-		fmt.Printf("glisp<< %s\n", exp)
+		log.Printf("glisp<< %s\n", exp)
 		res := lang.EvalExp(strings.NewReader(exp))
-		fmt.Println()
-		fmt.Printf("glsip>> %v", res)
+		log.Println()
+		log.Printf("glsip>> %v", res)
 	case "run":
 		if len(os.Args) < 3 {
 			panic("Missing filepath")

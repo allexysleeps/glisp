@@ -2,10 +2,10 @@ package parse
 
 import (
 	"fmt"
-	"glisp/lang/parse/symbols"
-	"glisp/lang/shared"
 	"io"
 	"text/scanner"
+
+	"glisp/lang/shared"
 )
 
 type lexer struct {
@@ -26,7 +26,7 @@ func Parse(input io.Reader) []shared.Expression {
 out:
 	for {
 		switch lex.token {
-		case symbols.ParOpen:
+		case symbolParOpen:
 			expressions = append(expressions, *parseExp(lex))
 		case scanner.EOF:
 			break out
@@ -42,7 +42,7 @@ func parseExp(lex *lexer) *shared.Expression {
 
 	lex.next()
 
-	if lex.token == symbols.ParClose {
+	if lex.token == symbolParClose {
 		lex.next()
 		return nil
 	}
@@ -54,19 +54,19 @@ func parseExp(lex *lexer) *shared.Expression {
 	prefixes := make(map[string]bool)
 out:
 	for {
-		switch {
-		case lex.token == symbols.ParOpen:
+		switch lex.token {
+		case symbolParOpen:
 			args = append(args, shared.ArgExpression{Value: parseExp(lex)})
-		case lex.token == symbols.ParClose:
+		case symbolParClose:
 			lex.next()
 			break out
-		case lex.token == symbols.Minus:
+		case symbolMinus:
 			prefixes["minus"] = true
 			lex.next()
-		case lex.token == symbols.SquareBracketOpen:
+		case symbolSquareBracketOpen:
 			prefixes["squareOpen"] = true
 			lex.next()
-		case lex.token == symbols.SquareBracketClose:
+		case symbolSquareBracketClose:
 			prefixes["squareOpen"] = false
 			lex.next()
 		default:

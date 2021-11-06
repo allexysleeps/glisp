@@ -1,12 +1,11 @@
 package lang
 
 import (
-	"glisp/lang/eval"
-	"glisp/lang/shared"
 	"io"
-)
-import (
+
+	"glisp/lang/eval"
 	"glisp/lang/parse"
+	"glisp/lang/shared"
 )
 
 func Run(input io.Reader) {

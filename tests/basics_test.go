@@ -2,12 +2,14 @@ package tests
 
 import (
 	"fmt"
-	"glisp/lang"
 	"strings"
 	"testing"
+
+	"glisp/lang"
 )
 
 func TestEval(t *testing.T) {
+	t.Parallel()
 	var tests = []struct {
 		input string
 		want  string
@@ -70,5 +72,4 @@ func TestEval(t *testing.T) {
 			t.Errorf("lang.EvalExp(%s) == %s, want %s", tst.input, res, tst.want)
 		}
 	}
-
 }

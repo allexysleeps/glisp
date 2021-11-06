@@ -1,5 +1,7 @@
 package shared
 
+import "glisp/lang/errors"
+
 const (
 	ArgTypeValue    = "value"
 	ArgTypeExp      = "expression"
@@ -35,5 +37,5 @@ func (v ArgArgument) Type() string   { return ArgTypeArgument }
 type Expression struct {
 	Operation string
 	Arguments []ExpArgument
-	Errors    []Err
+	Errors    []errors.Err
 }

@@ -1,11 +1,12 @@
 package eval
 
 import (
+	"glisp/lang/errors"
 	"glisp/lang/operations"
 	"glisp/lang/shared"
 )
 
-type operation = func(s *shared.Scope, e *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err)
+type operation = func(s *shared.Scope, e *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err)
 
 var operationsMap = map[string]operation{
 	// calculus
@@ -40,7 +41,7 @@ func Eval(parentScope *shared.Scope, exp shared.Expression) shared.Value {
 	return val
 }
 
-func eval(scope *shared.Scope, exp shared.Expression) (shared.Value, *shared.Err) {
+func eval(scope *shared.Scope, exp shared.Expression) (shared.Value, *errors.Err) {
 	op, ok := operationsMap[exp.Operation]
 	if !ok {
 		return operations.Function(exp.Operation, scope, exp, eval)

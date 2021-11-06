@@ -1,15 +1,17 @@
 package operations
 
 import (
-	"fmt"
+	"log"
+
+	"glisp/lang/errors"
 	"glisp/lang/shared"
 )
 
-func Print(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *shared.Err) {
+func Print(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
 	val, err := argValue(scope, eval, exp.Arguments[0])
 	if err != nil {
-		return nil, shared.CreateErrStack("print", err)
+		return nil, errors.CreateErrStack("print", err)
 	}
-	fmt.Println(val.StrVal())
+	log.Print(val.StrVal())
 	return val, nil
 }
