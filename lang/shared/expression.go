@@ -2,15 +2,17 @@ package shared
 
 import "glisp/lang/errors"
 
+type ArgType string
+
 const (
-	ArgTypeValue    = "value"
-	ArgTypeExp      = "expression"
-	ArgTypeVariable = "variable"
-	ArgTypeArgument = "argument"
+	ArgTypeValue    ArgType = "value"
+	ArgTypeExp      ArgType = "expression"
+	ArgTypeVariable ArgType = "variable"
+	ArgTypeArgument ArgType = "argument"
 )
 
 type ExpArgument interface {
-	Type() string
+	Type() ArgType
 }
 
 type ArgValue struct {
@@ -29,10 +31,10 @@ type ArgArgument struct {
 	Value string
 }
 
-func (v ArgValue) Type() string      { return ArgTypeValue }
-func (v ArgVariable) Type() string   { return ArgTypeVariable }
-func (v ArgExpression) Type() string { return ArgTypeExp }
-func (v ArgArgument) Type() string   { return ArgTypeArgument }
+func (v ArgValue) Type() ArgType      { return ArgTypeValue }
+func (v ArgVariable) Type() ArgType   { return ArgTypeVariable }
+func (v ArgExpression) Type() ArgType { return ArgTypeExp }
+func (v ArgArgument) Type() ArgType   { return ArgTypeArgument }
 
 type Expression struct {
 	Operation string

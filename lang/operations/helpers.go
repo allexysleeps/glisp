@@ -19,6 +19,11 @@ func argValue(scope *shared.Scope, eval shared.Evaluator, arg shared.ExpArgument
 		return vVal.Value(), nil
 	case shared.ArgTypeExp:
 		return eval(scope, *arg.(shared.ArgExpression).Value)
+	case shared.ArgTypeArgument:
+		{
+			vName := arg.(shared.ArgVariable).Value
+			return nil, errors.CreateRootError(errors.ErrUndefined, fmt.Sprintf("unexpected argType argument [%s]", vName), "")
+		}
 	}
 	return nil, nil
 }
