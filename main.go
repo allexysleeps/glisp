@@ -17,9 +17,12 @@ func main() {
 		lang.Run(file)
 		return
 	}
+
+	requiredArgsLen := 3
+
 	switch os.Args[1] {
 	case "eval":
-		if len(os.Args) < 3 {
+		if len(os.Args) < requiredArgsLen {
 			panic("Missing expression to eval")
 		}
 		exp := os.Args[2]
@@ -28,7 +31,7 @@ func main() {
 		log.Println()
 		log.Printf("glsip>> %v", res)
 	case "run":
-		if len(os.Args) < 3 {
+		if len(os.Args) < requiredArgsLen {
 			panic("Missing filepath")
 		}
 		file, err := os.Open(os.Args[2])

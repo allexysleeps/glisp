@@ -59,6 +59,7 @@ out:
 			args = append(args, shared.ArgExpression{Value: parseExp(lex)})
 		case symbolParClose:
 			lex.next()
+
 			break out
 		case symbolMinus:
 			prefixes["minus"] = true

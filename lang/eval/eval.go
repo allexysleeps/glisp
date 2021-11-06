@@ -36,6 +36,7 @@ func Eval(parentScope *shared.Scope, exp shared.Expression) shared.Value {
 	val, err := eval(parentScope, exp)
 	if err != nil {
 		err.Print()
+
 		return nil
 	}
 	return val

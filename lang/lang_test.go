@@ -1,11 +1,9 @@
-package tests
+package lang
 
 import (
 	"fmt"
 	"strings"
 	"testing"
-
-	"glisp/lang"
 )
 
 func TestEval(t *testing.T) {
@@ -19,16 +17,8 @@ func TestEval(t *testing.T) {
 			want:  "3",
 		},
 		{
-			input: "(sub 10 3)",
-			want:  "7",
-		},
-		{
 			input: "(mult 2 2 5)",
 			want:  "20",
-		},
-		{
-			input: "(div 125 5)",
-			want:  "25",
 		},
 		{
 			input: "(sum (div 100 2 (sum 2 3)) (sub 20 7 3))",
@@ -68,7 +58,7 @@ func TestEval(t *testing.T) {
 		},
 	}
 	for _, tst := range tests {
-		if res := fmt.Sprintf("%v", lang.EvalExp(strings.NewReader(tst.input))); res != tst.want {
+		if res := fmt.Sprintf("%v", EvalExp(strings.NewReader(tst.input))); res != tst.want {
 			t.Errorf("lang.EvalExp(%s) == %s, want %s", tst.input, res, tst.want)
 		}
 	}
