@@ -1,11 +1,10 @@
 package main
 
 import (
+	"glisp/lang"
 	"log"
 	"os"
 	"strings"
-
-	"glisp/lang"
 )
 
 func main() {

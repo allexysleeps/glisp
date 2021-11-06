@@ -8,7 +8,7 @@ import (
 
 func TestEval(t *testing.T) {
 	t.Parallel()
-	var tests = []struct {
+	tests := []struct {
 		input string
 		want  string
 	}{

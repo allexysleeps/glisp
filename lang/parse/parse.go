@@ -2,10 +2,9 @@ package parse
 
 import (
 	"fmt"
+	"glisp/lang/shared"
 	"io"
 	"text/scanner"
-
-	"glisp/lang/shared"
 )
 
 type lexer struct {

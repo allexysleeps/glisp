@@ -2,13 +2,12 @@ package operations
 
 import (
 	"fmt"
-
 	"glisp/lang/errors"
 	"glisp/lang/shared"
 )
 
 func List(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	var values []shared.Value
+	values := make([]shared.Value, 0, len(exp.Arguments))
 
 	for _, arg := range exp.Arguments {
 		val, err := argValue(scope, eval, arg)
@@ -41,7 +40,8 @@ func Length(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) 
 }
 
 func Get(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	requiredArgs := 2
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), requiredArgs)
 	if !ok {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, errMsg, "get")
 	}
@@ -68,6 +68,8 @@ func Get(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 }
 
 func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
+	maxArgsLen := 2
+
 	argsLen := len(exp.Arguments)
 	if argsLen < 1 {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, "to few arguments provided to subList", "subList")
@@ -90,7 +92,7 @@ func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator)
 	}
 
 	var end int
-	if argsLen == 3 {
+	if argsLen == maxArgsLen {
 		endVal, err := argValue(scope, eval, exp.Arguments[2])
 		if err != nil {
 			return nil, errors.CreateErrStack("map", err)
@@ -112,7 +114,8 @@ func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator)
 }
 
 func Map(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	requiredArgs := 2
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), requiredArgs)
 	if !ok {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, errMsg, "map")
 	}
@@ -131,9 +134,11 @@ func Map(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 		return nil, errors.CreateRootError(errors.ErrWrongSyntax, "arg provided to map is not of a list type", "map")
 	}
 
-	var values []shared.Value
+	listValues := *list.ListVal()
 
-	for _, li := range *list.ListVal() {
+	values := make([]shared.Value, 0, len(listValues))
+
+	for _, li := range listValues {
 		val, err := execFunction(fName, scope, eval, []shared.Value{li})
 		if err != nil {
 			return nil, errors.CreateErrStack("map", err)

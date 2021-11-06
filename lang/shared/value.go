@@ -15,6 +15,8 @@ const (
 	TypeList ValType = "list"
 )
 
+const floatBitSize = 64
+
 type Value interface {
 	Type() ValType
 	IsNull() bool
@@ -40,7 +42,7 @@ func (v value) NumVal() float64 {
 	case TypeNum:
 		return v.numVal
 	case TypeStr:
-		num, err := strconv.ParseFloat(v.strVal, 64)
+		num, err := strconv.ParseFloat(v.strVal, floatBitSize)
 		if err != nil {
 			return 0
 		}
@@ -52,6 +54,8 @@ func (v value) NumVal() float64 {
 		return 0
 	case TypeList:
 		return float64(len(*v.listVal))
+	case TypeNull:
+		return 0
 	}
 	return 0
 }
@@ -75,6 +79,9 @@ func (v value) BoolVal() bool {
 			return true
 		}
 		return false
+	case TypeNull:
+		return false
+
 	}
 	return false
 }
@@ -89,13 +96,15 @@ func (v value) StrVal() string {
 		}
 		return "false"
 	case TypeNum:
-		return strconv.FormatFloat(v.numVal, 'f', -1, 64)
+		return strconv.FormatFloat(v.numVal, 'f', -1, floatBitSize)
 	case TypeList:
 		var strVals []string
 		for _, val := range *v.listVal {
 			strVals = append(strVals, val.StrVal())
 		}
 		return strings.Join(strVals, ",")
+	case TypeNull:
+		return ""
 	}
 	return ""
 }
@@ -108,7 +117,7 @@ func (v value) ListVal() *[]Value {
 }
 
 func CreateValue(s string) (Value, bool) {
-	num, err := strconv.ParseFloat(s, 64)
+	num, err := strconv.ParseFloat(s, floatBitSize)
 	if err == nil {
 		return value{t: TypeNum, numVal: num}, true
 	}

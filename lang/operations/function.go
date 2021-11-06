@@ -2,7 +2,6 @@ package operations
 
 import (
 	"fmt"
-
 	"glisp/lang/errors"
 	"glisp/lang/shared"
 )
@@ -14,7 +13,7 @@ func DefFn(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (
 	}
 	fName := exp.Arguments[0].(shared.ArgVariable).Value
 	var arity int
-	var fArgs []string
+	var fArgs []string //nolint:prealloc // args will most likely vary between 1 - 3
 	for i, arg := range exp.Arguments[1:] {
 		if arg.Type() != shared.ArgTypeArgument {
 			arity = i

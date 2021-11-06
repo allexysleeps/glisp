@@ -1,10 +1,9 @@
 package operations
 
 import (
-	"log"
-
 	"glisp/lang/errors"
 	"glisp/lang/shared"
+	"log"
 )
 
 func Print(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {

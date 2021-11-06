@@ -2,7 +2,6 @@ package operations
 
 import (
 	"fmt"
-
 	"glisp/lang/errors"
 	"glisp/lang/shared"
 )

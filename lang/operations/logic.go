@@ -6,7 +6,8 @@ import (
 )
 
 func If(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 3)
+	requiredArgs := 3
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), requiredArgs)
 	if !ok {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, errMsg, "if")
 	}
@@ -29,7 +30,8 @@ func If(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sha
 }
 
 func Eql(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	requiredArgs := 2
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), requiredArgs)
 	if !ok {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, errMsg, "eql")
 	}
@@ -56,7 +58,8 @@ func MoreEq(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) 
 }
 
 func compareNumArgs(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator, operation string, comp func(a, b float64) bool) (shared.Value, *errors.Err) {
-	errMsg, ok := argLenErrorMsg(len(exp.Arguments), 2)
+	requiredArgs := 2
+	errMsg, ok := argLenErrorMsg(len(exp.Arguments), requiredArgs)
 	if !ok {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, errMsg, operation)
 	}
