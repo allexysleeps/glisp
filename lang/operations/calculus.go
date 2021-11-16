@@ -1,8 +1,8 @@
 package operations
 
 import (
-	"glisp/lang/errors"
-	"glisp/lang/shared"
+	"github.com/allexysleeps/glisp/lang/errors"
+	"github.com/allexysleeps/glisp/lang/shared"
 )
 
 func calcArgs(

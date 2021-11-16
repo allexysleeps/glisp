@@ -1,6 +1,8 @@
 package shared
 
-import "glisp/lang/errors"
+import (
+	"github.com/allexysleeps/glisp/lang/errors"
+)
 
 type ArgType string
 

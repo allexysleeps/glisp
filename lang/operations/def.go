@@ -2,8 +2,9 @@ package operations
 
 import (
 	"fmt"
-	"glisp/lang/errors"
-	"glisp/lang/shared"
+
+	"github.com/allexysleeps/glisp/lang/errors"
+	"github.com/allexysleeps/glisp/lang/shared"
 )
 
 func Def(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {

@@ -4,4 +4,5 @@
         (mult
             (factorial (sub num 1))
             num)))
+
 (print (factorial 10))

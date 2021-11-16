@@ -2,9 +2,10 @@ package parse
 
 import (
 	"fmt"
-	"glisp/lang/shared"
 	"io"
 	"text/scanner"
+
+	"github.com/allexysleeps/glisp/lang/shared"
 )
 
 type lexer struct {

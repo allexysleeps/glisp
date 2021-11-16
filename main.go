@@ -1,10 +1,11 @@
 package main
 
 import (
-	"glisp/lang"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/allexysleeps/glisp/lang"
 )
 
 func main() {

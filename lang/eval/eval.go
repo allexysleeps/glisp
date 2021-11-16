@@ -1,9 +1,9 @@
 package eval
 
 import (
-	"glisp/lang/errors"
-	"glisp/lang/operations"
-	"glisp/lang/shared"
+	"github.com/allexysleeps/glisp/lang/errors"
+	"github.com/allexysleeps/glisp/lang/operations"
+	"github.com/allexysleeps/glisp/lang/shared"
 )
 
 type operation = func(s *shared.Scope, e *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err)
