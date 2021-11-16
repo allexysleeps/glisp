@@ -69,7 +69,7 @@ func Get(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (sh
 }
 
 func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (shared.Value, *errors.Err) {
-	maxArgsLen := 2
+	maxArgsLen := 3
 
 	argsLen := len(exp.Arguments)
 	if argsLen < 1 {
@@ -92,24 +92,26 @@ func SubList(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator)
 		return nil, errors.CreateRootError(errors.ErrWrongSyntax, "start provided to subList is not of a num type", "subList")
 	}
 
-	var end int
+	var rEnd int
 	if argsLen == maxArgsLen {
 		endVal, err := argValue(scope, eval, exp.Arguments[2])
 		if err != nil {
 			return nil, errors.CreateErrStack("map", err)
 		}
 		if endVal.Type() != shared.TypeNum {
-			return nil, errors.CreateRootError(errors.ErrWrongSyntax, "end provided to subList is not of a num type", "subList")
+			return nil, errors.CreateRootError(errors.ErrWrongSyntax, "rEnd provided to subList is not of a num type", "subList")
 		}
-		if end > argsLen-1 {
-			return nil, errors.CreateRootError(errors.ErrWrongSyntax, "end provided to subList is out of list range", "subList")
+		if rEnd > argsLen-1 {
+			return nil, errors.CreateRootError(errors.ErrWrongSyntax, "rEnd provided to subList is out of list range", "subList")
 		}
-		end = int(endVal.NumVal())
+		rEnd = int(endVal.NumVal())
 	} else {
-		end = argsLen - 1
+		rEnd = argsLen - 1
 	}
 
-	newList := (*list.ListVal())[int(start.NumVal()) : end+1]
+	rStart := int(start.NumVal())
+
+	newList := (*list.ListVal())[rStart : rEnd+1]
 
 	return shared.CreateValueOfType(shared.TypeList, &newList), nil
 }

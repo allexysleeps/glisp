@@ -1,7 +1,7 @@
 package operations
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/allexysleeps/glisp/lang/errors"
 	"github.com/allexysleeps/glisp/lang/shared"
@@ -12,6 +12,6 @@ func Print(scope *shared.Scope, exp *shared.Expression, eval shared.Evaluator) (
 	if err != nil {
 		return nil, errors.CreateErrStack("print", err)
 	}
-	log.Print(val.StrVal())
+	fmt.Printf("glisp>> %s\n", val.StrVal())
 	return val, nil
 }

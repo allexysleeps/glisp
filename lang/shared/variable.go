@@ -32,10 +32,15 @@ type funcVar struct {
 	args []string
 }
 
-func (v *funcVar) Type() varType                        { return v.t }
-func (v *funcVar) Name() string                         { return v.name }
-func (v *funcVar) Value() Value                         { return nil }
-func (v *funcVar) Exec() (e *Expression, args []string) { return }
+func (v *funcVar) Type() varType { return v.t }
+func (v *funcVar) Name() string  { return v.name }
+func (v *funcVar) Value() Value  { return nil }
+func (v *funcVar) Exec() (
+	*Expression,
+	[]string,
+) {
+	return v.exp, v.args
+}
 
 func CreateValueVar(name string, value Value) Variable {
 	return &primVar{t: VarPrimitive, name: name, value: value}

@@ -47,19 +47,19 @@ func Function(fName string, parentScope *shared.Scope,
 	val, ok := parentScope.Get(fName)
 	if !ok {
 		return nil, errors.CreateRootError(
-			errors.ErrUndefined, fmt.Sprintf("undefined function name %scope", fName), "")
+			errors.ErrUndefined, fmt.Sprintf("undefined function name %s", fName), "")
 	}
 	if val.Type() != shared.VarFn {
 		return nil, errors.CreateRootError(
-			errors.ErrUndefined, fmt.Sprintf("%scope is not a function", fName), "")
+			errors.ErrUndefined, fmt.Sprintf("%s is not a function", fName), "")
 	}
 	exp, fArgs := val.Exec()
-	scope := shared.CreateScope(parentScope)
 	if len(fArgs) != len(parentExp.Arguments) {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, fmt.Sprintf(
-			"wrong amount of arguments provided to %scope want %d, got %d", fName, len(fArgs), len(parentExp.Arguments)),
+			"wrong amount of arguments provided to %s want %d, got %d", fName, len(fArgs), len(parentExp.Arguments)),
 			fName)
 	}
+	scope := shared.CreateScope(parentScope)
 	for i, argName := range fArgs {
 		argVal, err := argValue(parentScope, eval, parentExp.Arguments[i])
 		if err != nil {
@@ -75,17 +75,17 @@ func execFunction(fName string, parentScope *shared.Scope,
 	val, ok := parentScope.Get(fName)
 	if !ok {
 		return nil, errors.CreateRootError(
-			errors.ErrUndefined, fmt.Sprintf("undefined function name %scope", fName), "")
+			errors.ErrUndefined, fmt.Sprintf("undefined function name %s", fName), "")
 	}
 	if val.Type() != shared.VarFn {
 		return nil, errors.CreateRootError(
-			errors.ErrUndefined, fmt.Sprintf("%scope is not a function", fName), "")
+			errors.ErrUndefined, fmt.Sprintf("%s is not a function", fName), "")
 	}
 	exp, fArgs := val.Exec()
 	scope := shared.CreateScope(parentScope)
 	if len(fArgs) != len(argValues) {
 		return nil, errors.CreateRootError(errors.ErrArgAmount, fmt.Sprintf(
-			"wrong amount of arguments provided to %scope want %d, got %d", fName, len(fArgs), len(argValues)),
+			"wrong amount of arguments provided to %s want %d, got %d", fName, len(fArgs), len(argValues)),
 			fName)
 	}
 	for i, argName := range fArgs {
